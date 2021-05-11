@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/templatemo-style.css" />
 	<link rel="icon" href="https://www.scdn.co/i/_global/favicon.png" type="image/png" sizes="16x16">
+	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
   </head>
 
 <body>
@@ -43,26 +44,44 @@ body {
 
 .responsive {
   width: 100%;
-  max-width: 250px;
+  max-width: 210px;
   height: auto;
   position: relative;
   margin: 0 auto;
-  margin-bottom: 20px;
-  margin-top: -10%;
+  margin-bottom: 45px;
   left: -10px;
-  bottom: 10px
-
+  top: 10px;
+  }
+  
+  
+.responsive1 {
+  width: 100%;
+  max-width: 330px;
+  height: 70%;
+  max-height: 750px;
+  position: relative;
+  margin: 0 auto;
+  }
+  
+ .responsive2 {
+  width: 90vw;
+  height: 80vh;
+  position: relative;
+  margin: 0 auto;
+  }
+  
 </style>  
     <section id="hero" class="text-white tm-font-big tm-parallax">
 	<div class="text-center tm-hero-text-container">
-			<img src="./spotify.png" class="responsive"></img>
-			<p style="font-family:'century gothic';font-size:1.5em;font-weight:bold">Listening to</p>
+			<img src="./spotify.png" class="responsive">
 			<p class="blink_me" style="font-family:'century gothic';font-size:0.8em;margin-bottom:-50px">Waiting playback status...</p>
-            <iframe class="resp-iframe" src="https://nowplaying.aidenwallis.co.uk/608c1240adffb91b3c9917de" allowfullscreen frameborder="0" style="margin-top:-37px;margin-bottom:-35px;z-index: 2">TEST</iframe>
-			<p style="font-size:0.6em;font-family:'century gothic';color:#ffffff;z-index:2">User id: <a href="https://open.spotify.com/user/senhan07" target="_blank" style="color: inherit;text-decoration: underline;">@senhan07</a> - <a href="https://www.last.fm/user/senhan07" target="_blank" style="color: inherit;text-decoration: underline;">Statistics</a></p>
-			    
+			<iframe class="responsive1" src="https://spotify-github-profile.vercel.app/api/view?uid=senhan07&cover_image=true&theme=default" allowfullscreen frameborder="0" style="z-index: 2"></iframe>
       </div>
-
+	
+	<div class="text-center tm-hero-text-container">
+		<iframe class="responsive2" src="https://spotify-recently-played-readme.vercel.app/api?user=senhan07&count=7&width=350" allowfullscreen frameborder="0" style="z-index: 2"></iframe>
+	
+	</div>
 
   </body>
 </html>
