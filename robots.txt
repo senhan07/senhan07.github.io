@@ -1,3 +1,5 @@
+Sitemap: https://senhan07.github.io/sitemap.xml
+
 User-agent: Googlebot-Image 
 Disallow: /
 
