@@ -7,3 +7,5 @@ Disallow: /img/ori/
 User-agent: *
 Disallow: *.pdf 
 Disallow: /sitemap.xml 
+Disallow: /img/portfolio/
+Disallow: /img/ori/
