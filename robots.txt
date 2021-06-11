@@ -1,7 +1,8 @@
 Sitemap: https://senhan07.github.io/sitemap.xml
 
 User-agent: Googlebot-Image 
-Disallow: /
+Disallow: /img/portfolio/
+Disallow: /img/ori/
 
 User-agent: *
 Disallow: *.pdf 
