@@ -1,3 +1,3 @@
-url: "http://senhan07.github.io/" # the base hostname & protocol for your site
+url: "https://senhan07.github.io/" # the base hostname & protocol for your site
 plugins:
   - jekyll-sitemap
