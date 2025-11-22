@@ -1,677 +1,443 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vincent Hans Susanto</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Vincent Hans Susanto</title>
+        <!-- Favicon: Dark square with Signal Orange dot -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2225%22 fill=%22%23ff4d00%22/></svg>" type="image/svg+xml">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['"Public Sans"', 'sans-serif'],
+                        display: ['"Syne"', 'sans-serif'],
+                    },
                     colors: {
-                        accent: {
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#2563eb',
+                        paper: '#0f0f0f',
+                        ink: '#e5e5e5',
+                        border: '#333333',
+                        signal: '#ff4d00',
+                    },
+                    animation: {
+                        'marquee': 'marquee 20s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
                         }
                     }
                 }
             }
         }
     </script>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            box-sizing: border-box;
-            overflow-x: hidden;
-        }
-        
-        html {
-            overflow-x: hidden;
-        }
-        
 
+    <style>
+        body { background-color: #0f0f0f; color: #e5e5e5; overflow-x: hidden; }
         
-        /* Timeline Design */
-        .timeline {
-            position: relative;
+        .grid-lines {
+            background-image: linear-gradient(to right, #333 1px, transparent 1px),
+                              linear-gradient(to bottom, #333 1px, transparent 1px);
+            background-size: 100% 100px;
+            background-position: top center;
         }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, 
-                rgba(59, 130, 246, 0.8) 0%, 
-                rgba(59, 130, 246, 0.4) 50%, 
-                rgba(59, 130, 246, 0.2) 100%);
+
+        ::selection { background-color: #ff4d00; color: #000; }
+
+        .link-underline { position: relative; text-decoration: none; }
+        .link-underline::after {
+            content: ''; position: absolute; width: 100%; height: 2px; bottom: -2px; left: 0;
+            background-color: #ff4d00; transform: scaleX(0); transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
         }
-        
-        .timeline-item {
-            position: relative;
-            padding-left: 50px;
-            margin-bottom: 40px;
-        }
-        
-        .timeline-dot {
-            position: absolute;
-            left: 6px;
-            top: 24px;
-            width: 18px;
-            height: 18px;
-            background: #3b82f6;
-            border: 3px solid white;
-            border-radius: 50%;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-            z-index: 2;
-        }
-        
-        .dark .timeline-dot {
-            border-color: #1f2937;
-        }
-        
-        /* Desktop timeline spacing */
-        @media (min-width: 768px) {
-            .timeline::before {
-                left: 30px;
-            }
-            
-            .timeline-item {
-                padding-left: 80px;
-            }
-            
-            .timeline-dot {
-                left: 21px;
-            }
-        }
-        
-        /* Micro-interactions */
-        .pulse-button {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-            }
-        }
-        
-        .tilt-card {
-            transition: transform 0.3s ease;
-        }
-        
-        .tilt-card:hover {
-            transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-2px);
-        }
-        
-        /* Prevent horizontal overflow on mobile */
-        @media (max-width: 768px) {
-            .tilt-card:hover {
-                transform: translateY(-2px);
-            }
-        }
-        
-        .page-dot {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .page-dot::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(59, 130, 246, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-        
-        .page-dot:hover::before {
-            width: 200%;
-            height: 200%;
-        }
-        
-        .fade-in {
+        .link-underline:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+
+        /* Animation Utilities */
+        .reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            /* We only transition the entry properties here to avoid conflicting with hover */
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .fade-in.visible {
+        .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
-        
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .slide-in-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(50px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .slide-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .scale-in {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .scale-in.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .theme-switch {
-            transition: all 0.3s ease;
-        }
-        
-        .accent-glow {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-        }
-        
-        .gradient-bg {
-            background: radial-gradient(circle at center, 
-                rgba(59, 130, 246, 0.05) 0%, 
-                rgba(59, 130, 246, 0.02) 30%, 
-                transparent 70%);
-        }
-        
-        .dark .gradient-bg {
-            background: radial-gradient(circle at center, 
-                rgba(59, 130, 246, 0.08) 0%, 
-                rgba(59, 130, 246, 0.04) 30%, 
-                transparent 70%);
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 40px rgba(59, 130, 246, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .dark .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        .dark .glass-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(59, 130, 246, 0.3);
-            transform: translateY(-2px);
-        }
-        
 
+        /* Stagger Delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
     </style>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-light leading-relaxed transition-colors duration-300 gradient-bg">
+<body class="antialiased">
 
-
-
-    <!-- Theme Switch Button -->
-    <div class="fixed bottom-8 right-8 z-50">
-        <button id="theme-toggle" class="theme-switch p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 pulse-button">
-            <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
-            </svg>
-            <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-            </svg>
-        </button>
+    <!-- Top Ticker -->
+    <div class="bg-signal text-black overflow-hidden py-2 whitespace-nowrap border-b border-border">
+        <div class="inline-flex animate-marquee font-bold font-display text-sm tracking-widest uppercase">
+             Alerts: Resolved /// System Status: Normal /// Available for Hire /// Monitoring Active /// Latency: Low /// Packet Loss: 0% /// Network Operations /// System Status: Normal /// Available for Hire ///
+        </div>
     </div>
 
-    <!-- Page Indicator -->
-    <div class="fixed right-8 top-1/2 transform -translate-y-1/2 z-40 hidden lg:block">
-        <nav class="flex flex-col space-y-4">
-            <a href="#header" class="page-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 hover:bg-accent-500 dark:hover:bg-accent-400 transition-all duration-300 cursor-pointer relative group" data-section="header">
-                <span class="absolute right-6 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Home</span>
-            </a>
-            <a href="#about" class="page-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 hover:bg-accent-500 dark:hover:bg-accent-400 transition-all duration-300 cursor-pointer relative group" data-section="about">
-                <span class="absolute right-6 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">About</span>
-            </a>
-            <a href="#skills" class="page-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 hover:bg-accent-500 dark:hover:bg-accent-400 transition-all duration-300 cursor-pointer relative group" data-section="skills">
-                <span class="absolute right-6 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Skills</span>
-            </a>
-            <a href="#experience" class="page-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 hover:bg-accent-500 dark:hover:bg-accent-400 transition-all duration-300 cursor-pointer relative group" data-section="experience">
-                <span class="absolute right-6 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Experience</span>
-            </a>
-            <a href="#projects" class="page-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 hover:bg-accent-500 dark:hover:bg-accent-400 transition-all duration-300 cursor-pointer relative group" data-section="projects">
-                <span class="absolute right-6 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Projects</span>
-            </a>
-            <a href="#contact" class="page-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 hover:bg-accent-500 dark:hover:bg-accent-400 transition-all duration-300 cursor-pointer relative group" data-section="contact">
-                <span class="absolute right-6 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Contact</span>
-            </a>
-        </nav>
-    </div>
+    <!-- Navbar -->
+    <nav class="border-b border-border bg-paper/90 backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-stretch h-16">
+            <div class="flex items-center px-6 border-r border-border z-10">
+                <span class="font-display font-bold text-xl tracking-tighter hover:text-signal transition-colors cursor-default">VHS<span class="text-signal">.</span></span>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex flex-1 justify-end">
+                <a href="#expertise" class="flex items-center px-8 border-l border-border hover:bg-white hover:text-black transition-colors font-medium text-sm uppercase tracking-wider">Expertise</a>
+                <a href="#work" class="flex items-center px-8 border-l border-border hover:bg-white hover:text-black transition-colors font-medium text-sm uppercase tracking-wider">Work</a>
+                <a href="#contact" class="flex items-center px-8 border-l border-border bg-white/5 hover:bg-signal hover:text-black transition-colors font-medium text-sm uppercase tracking-wider">Contact</a>
+            </div>
 
-    <div class="max-w-4xl mx-auto px-4 sm:px-8 py-16">
-        <!-- Header -->
-        <header id="header" class="mb-20 fade-in">
-            <div class="grid md:grid-cols-2 gap-8 items-start">
-                <div>
-                    <h1 class="text-5xl md:text-6xl font-light mb-4 tracking-wide">Vincent Hans Susanto</h1>
-                    <p class="text-lg text-accent-500 dark:text-accent-400 mb-6">
-                        Network Operations Center Engineer
-                    </p>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm">
-                        Surabaya, East Java, Indonesia
-                    </p>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden px-6 border-l border-border text-white hover:bg-signal hover:text-black transition-colors font-bold uppercase tracking-wider text-sm">
+                MENU
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-paper absolute w-full left-0 z-40">
+            <div class="flex flex-col">
+                <a href="#expertise" class="py-4 px-6 border-b border-border hover:bg-white hover:text-black transition-colors font-medium uppercase tracking-wider">Expertise</a>
+                <a href="#work" class="py-4 px-6 border-b border-border hover:bg-white hover:text-black transition-colors font-medium uppercase tracking-wider">Work</a>
+                <a href="#contact" class="py-4 px-6 border-b border-border hover:bg-signal hover:text-black transition-colors font-medium uppercase tracking-wider">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-[1400px] mx-auto border-x border-border bg-paper relative">
+        
+        <!-- Hero Section -->
+        <header class="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh]">
+            <!-- Left Col: Text -->
+            <div class="p-8 md:p-16 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-border relative">
+                <div class="absolute inset-0 grid-lines opacity-20 pointer-events-none"></div>
+                
+                <div class="reveal">
+                    <h2 class="font-mono text-xs text-signal mb-4 tracking-widest">[ IDENTITY VERIFIED ]</h2>
+                    
+                    <h1 class="font-display text-5xl sm:text-6xl md:text-7xl font-semibold leading-tight mb-6 tracking-tight">
+                        Vincent Hans <br>
+                        <span class="text-gray-500">Susanto.</span>
+                    </h1>
                 </div>
-                <div class="flex justify-start md:justify-end">
-                    <div class="flex space-x-4">
-                        <a href="mailto:losenhan1@gmail.com" class="p-3 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 group" title="Email">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
-                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
-                            </svg>
+                
+                <div class="reveal delay-100">
+                    <p class="text-xl md:text-2xl font-light text-gray-400 leading-snug max-w-md mb-8">
+                    NOC Engineer specializing in <span class="font-medium text-zinc-900 dark:text-zinc-200">high-availability infrastructure</span> and keeping the digital lights on for enterprise-grade networks.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="inline-flex justify-center items-center px-8 py-4 bg-signal text-black font-bold uppercase tracking-wide hover:bg-white hover:scale-105 transition-all duration-300">
+                            Initiate Contact
                         </a>
-                        <a href="https://linkedin.com/in/vincent-hans" target="_blank" rel="noopener noreferrer" class="p-3 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 group" title="LinkedIn">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"></path>
-                            </svg>
-                        </a>
-                        <a href="https://github.com/senhan07" target="_blank" rel="noopener noreferrer" class="p-3 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 group" title="GitHub">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"></path>
-                            </svg>
-                        </a>
-                        <a href="https://instagram.com/senhan07" target="_blank" rel="noopener noreferrer" class="p-3 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 group" title="Instagram">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                            </svg>
+                        <a href="https://linkedin.com/in/vincent-hans" class="inline-flex justify-center items-center px-8 py-4 border border-border text-white font-medium uppercase tracking-wide hover:border-white hover:bg-white/5 transition-all duration-300">
+                            View Profile
                         </a>
                     </div>
+                </div>
+            </div>
+
+            <!-- Right Col: Stats -->
+            <div class="grid grid-rows-3 border-b border-border lg:border-b-0">
+                <div class="p-8 border-b border-border flex items-center justify-between group hover:bg-white/5 transition-colors cursor-default reveal delay-200">
+                    <div>
+                        <span class="block text-xs text-gray-500 uppercase tracking-widest mb-1 group-hover:text-signal transition-colors">Current Location</span>
+                        <span class="font-display text-2xl font-bold">Surabaya, ID</span>
+                    </div>
+                    <svg class="w-8 h-8 text-signal group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </div>
+                <div class="p-8 border-b border-border flex items-center justify-between group hover:bg-white/5 transition-colors cursor-default reveal delay-300">
+                     <div>
+                        <span class="block text-xs text-gray-500 uppercase tracking-widest mb-1 group-hover:text-signal transition-colors">Work Experience</span>
+                        <span class="font-display text-2xl font-bold">5+ Years Exp.</span>
+                    </div>
+                    <span class="font-mono text-signal text-xl">///</span>
+                </div>
+                 <div class="p-8 flex items-center justify-between group hover:bg-white/5 transition-colors cursor-default reveal delay-300">
+                     <div>
+                        <span class="block text-xs text-gray-500 uppercase tracking-widest mb-1 group-hover:text-signal transition-colors">Focus Area</span>
+                        <span class="font-display text-2xl font-bold">High-Availability Ops</span>
+                    </div>
+                    <svg class="w-8 h-8 text-signal group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
         </header>
 
-        <!-- About -->
-        <section id="about" class="mb-20 fade-in">
-            <p class="text-lg text-gray-700 dark:text-gray-300 leading-loose max-w-3xl mx-auto text-center">
-                Expertise in managing servers, networks, and systems. 
-                Experienced in monitoring and maintaining network infrastructure for enterprise clients using 
-                radio and fiber optic technology. Dedicated to continuous learning and hands-on experience 
-                in system administration and network engineering.
-            </p>
-        </section>
+        <!-- Separator -->
+        <div class="border-y border-border py-12 px-6 md:px-16 reveal">
+            <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight">
+                "Bridging physical hardware with <span class="text-signal">digital reliability</span>."
+            </h2>
+        </div>
 
-        <!-- Skills -->
-        <section id="skills" class="mb-20 fade-in">
-            <h2 class="text-2xl font-thin mb-12 text-center">Technical Skills</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card rounded-xl p-6 slide-in-left tilt-card">
-                    <h3 class="text-lg font-normal mb-6 text-accent-500 dark:text-accent-400">Computer & Networking</h3>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div class="space-y-2">
-                            <div class="text-gray-600 dark:text-gray-400">• TCP/IP, LAN/WAN</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Routing, EOIP Tunnel</div>
-                            <div class="text-gray-600 dark:text-gray-400">• IPSec, L2TP, PPTP</div>
-                            <div class="text-gray-600 dark:text-gray-400">• OLT, ONT, FTTH</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Unifi, Ruijie, Mikrotik</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Cisco, Linux, Docker</div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-gray-600 dark:text-gray-400">• Virtualization</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Containerization</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Automation Scripting</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Syslog, Loki</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Grafana, Prometheus</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Blackbox, SNMP</div>
-                        </div>
-                    </div>
+        <!-- Expertise -->
+        <section id="expertise" class="grid grid-cols-1 md:grid-cols-12">
+            <div class="md:col-span-4 p-8 md:p-12 border-b md:border-b-0 md:border-r border-border reveal">
+                <span class="text-signal font-mono text-6xl md:text-8xl font-bold opacity-20">01</span>
+                <h3 class="font-display text-3xl font-bold mt-4 mb-6">Technical<br>Arsenal</h3>
+                <p class="text-gray-400">A curated suite of tools used to maintain enterprise networks.</p>
+            </div>
+            
+            <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2">
+                <div class="border-b sm:border-b-0 sm:border-r border-border p-8 md:p-12 reveal delay-100">
+                    <h4 class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-6">Computer & Networking</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>TCP/IP   LAN/WAN</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Routing / EOIP Tunnel</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>IPSec / L2TP / PPTP</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>OLT / ONT / FTTH</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Unifi / Ruijie / Mikrotik</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Cisco / Linux / Docker</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                    </ul>
                 </div>
-                <div class="glass-card rounded-xl p-6 slide-in-right tilt-card">
-                    <h3 class="text-lg font-normal mb-6 text-accent-500 dark:text-accent-400">Development & Design</h3>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div class="space-y-2">
-                            <div class="text-gray-600 dark:text-gray-400">• GitHub, Git</div>
-                            <div class="text-gray-600 dark:text-gray-400">• WordPress</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Elementor</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Graphic Design</div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-gray-600 dark:text-gray-400">• Product Design</div>
-                            <div class="text-gray-600 dark:text-gray-400">• E-commerce Design</div>
-                            <div class="text-gray-600 dark:text-gray-400">• Photoshop</div>
-                        </div>
-                    </div>
+                <div class="p-8 md:p-12 reveal delay-200">
+                    <h4 class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-6">System & DevOps</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Virtualization</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Containerization</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Automation Scripting</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Syslog / Loki</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Grafana / Prometheus</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                        <li class="flex items-center justify-between border-b border-border pb-2 group cursor-default"><span>Blackbox / SNMP</span><span class="opacity-0 group-hover:opacity-100 text-signal transition-opacity duration-300">●</span></li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <!-- Experience -->
-        <section id="experience" class="mb-20 fade-in">
-            <h2 class="text-2xl font-thin mb-12 text-center">Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="glass-card rounded-xl p-6 scale-in tilt-card">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                            <h3 class="text-xl font-normal">Network Operations Center</h3>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Oct 2024 - Present</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-400 mb-2 font-medium">PT Quantum Tera Network</p>
-                        <ul class="text-gray-600 dark:text-gray-400 mb-4 space-y-2 text-sm">
-                            <li>• Monitored and maintained network infrastructure for enterprise clients using radio and fiber optic technology</li>
-                            <li>• Provided network support for critical locations including Tunjungan Plaza, Pakuwon Mall, Pakuwon City Mall, Waterplace, Four Points, Ascott, and Shopee</li>
-                            <li>• Performed routine maintenance, software updates, backups, and configuration changes</li>
-                            <li>• Utilized Grafana and Prometheus stacks to collect, visualize, and analyze real-time network metrics performance</li>
-                            <li>• Executed link rerouting and failover procedures during outages to maintain service continuity</li>
-                            <li>• Troubleshot latency, packet loss, and routing anomalies across links</li>
-                            <li>• Provided technical support remotely and on-site for hardware and network issues</li>
-                        </ul>
-                    </div>
-                </div>
+        <section id="work" class="border-t border-border">
+             <div class="p-8 md:p-12 border-b border-border flex items-baseline gap-4 reveal">
+                <span class="text-signal font-mono text-xl">02</span>
+                <h3 class="font-display text-3xl font-bold uppercase">Career History</h3>
+            </div>
+
+            <!-- Grid Layout for Better Desktop Usage -->
+            <div class="grid grid-cols-1 lg:grid-cols-2">
                 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="glass-card rounded-xl p-6 scale-in tilt-card">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                            <h3 class="text-xl font-normal">Graphic Designer</h3>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Oct 2020 - Aug 2024</span>
+                <!-- Job 1 (Full Width - Featured) -->
+                <!-- Fixed lag by adding hover:delay-0 and hover:duration-300 -->
+                <div class="lg:col-span-2 border-b border-border p-8 md:p-12 group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 reveal delay-100 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-6">
+                        <div>
+                            <h4 class="font-display text-2xl md:text-3xl font-bold mb-2">NOC Engineer</h4>
+                            <span class="font-mono text-sm text-gray-500 group-hover:text-black uppercase tracking-wider">PT Quantum Tera Network</span>
                         </div>
-                        <p class="text-gray-600 dark:text-gray-400 mb-2 font-medium">CV Surya Agung Sejahtera</p>
-                        <ul class="text-gray-600 dark:text-gray-400 mb-4 space-y-2 text-sm">
-                            <li>• Created LED packaging for 20+ custom brands within six months</li>
-                            <li>• Designed innovative lamp display rack designs to optimize product presentation</li>
-                            <li>• Developed banners that increased brand visibility</li>
-                            <li>• Created comprehensive product catalogs for marketing needs</li>
+                        <div class="mt-2 md:mt-0">
+                            <span class="font-mono text-xs border border-border px-3 py-1 rounded-full group-hover:border-black transition-colors">Oct 2024 - Present</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8">
+                        <ul class="list-disc pl-4 space-y-2 text-sm md:text-base text-gray-400 group-hover:text-gray-700">
+                            <li>Monitored and maintained network infrastructure for enterprise clients using radio and fiber optic technology</li>
+                            <li>Provided network support for critical locations including Tunjungan Plaza, Pakuwon Mall, Pakuwon City Mall, Waterplace, Four Points, Ascott, and Shopee</li>
+                            <li>Performed routine maintenance, software updates, backups, and configuration changes</li>
+                            <li>Utilized Grafana and Prometheus stacks to collect, visualize, and analyze real-time network metrics performance</li>
+                        </ul>
+                        <ul class="list-disc pl-4 space-y-2 text-sm md:text-base text-gray-400 group-hover:text-gray-700">
+                            <li>Executed link rerouting and failover procedures during outages to maintain service continuity</li>
+                            <li>Troubleshot latency, packet loss, and routing anomalies across links</li>
+                            <li>Provided technical support remotely and on-site for hardware and network issues</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="glass-card rounded-xl p-6 scale-in tilt-card">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                            <h3 class="text-xl font-normal">AI Model Developer</h3>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Apr 2023</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-400 mb-2 font-medium">Self-Employed</p>
-                        <ul class="text-gray-600 dark:text-gray-400 mb-4 space-y-2 text-sm">
-                            <li>• Developed a custom LoRA model for Stable Diffusion 1.5, focusing on fine-tuning for improved generative output</li>
-                            <li>• Marketed and sold the model, providing technical support and gathering feedback for ongoing improvement</li>
-                            <li>• Achieved successful sales and received positive feedback from users for the model's performance</li>
-                        </ul>
+                <!-- Job 2 -->
+                <div class="border-b border-border lg:border-r p-8 group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col reveal delay-200 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-display text-xl font-bold">Graphic Designer</h4>
+                        <span class="font-mono text-xs border border-border px-2 py-1 rounded-full group-hover:border-black whitespace-nowrap ml-2 transition-colors">Oct 2020 - Aug 2024</span>
                     </div>
+                    <span class="font-mono text-xs text-gray-500 group-hover:text-black uppercase tracking-widest mb-6 block">CV Surya Agung Sejahtera</span>
+                    <ul class="list-disc pl-4 space-y-2 text-sm text-gray-400 group-hover:text-gray-700">
+                        <li>Created LED packaging for 20+ custom brands within six months</li>
+                        <li>Designed innovative lamp display rack designs to optimize product presentation</li>   
+                        <li>Developed banners that increased brand visibility</li>
+                        <li>Created comprehensive product catalogs for marketing needs</li>   
+                    </ul>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="glass-card rounded-xl p-6 scale-in tilt-card">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                            <h3 class="text-xl font-normal">IT Support</h3>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Mar - Aug 2019</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-400 mb-2 font-medium">University of Surabaya - Intern</p>
-                        <ul class="text-gray-600 dark:text-gray-400 mb-4 space-y-2 text-sm">
-                            <li>• Implemented a centralized system to monitor and control over 120 computers</li>
-                            <li>• Enabled remote control, mass software installation, and updates</li>
-                            <li>• Installed and configured computer hardware, software, servers, networks</li>
-                            <li>• Assisted the network team in monitoring and maintaining 2 network servers</li>
-                            <li>• Provided IT support services, troubleshooting, and system operation</li>
-                        </ul>
+                <!-- Job 3 -->
+                <div class="border-b border-border p-8 group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col reveal delay-200 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-display text-xl font-bold">AI Model Developer</h4>
+                        <span class="font-mono text-xs border border-border px-2 py-1 rounded-full group-hover:border-black whitespace-nowrap ml-2 transition-colors">Apr 2023</span>
                     </div>
+                    <span class="font-mono text-xs text-gray-500 group-hover:text-black uppercase tracking-widest mb-6 block">Self-Employed</span>
+                    <ul class="list-disc pl-4 space-y-2 text-sm text-gray-400 group-hover:text-gray-700">
+                        <li>Developed a custom LoRA model for Stable Diffusion 1.5, focusing on fine-tuning for improved generative output</li>
+                        <li>Marketed and sold the model, providing technical support and gathering feedback for ongoing improvement</li>
+                        <li>Achieved successful sales and received positive feedback from users for the model's performance</li>
+                    </ul>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="glass-card rounded-xl p-6 scale-in tilt-card">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                            <h3 class="text-xl font-normal">IT Support for National OSCE</h3>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">2019 (twice)</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-400 mb-2 font-medium">University of Surabaya - Part</p>
-                        <ul class="text-gray-600 dark:text-gray-400 mb-4 space-y-2 text-sm">
-                            <li>• Maintained computer networks to ensure seamless operations</li>
-                            <li>• Provided essential technical support to optimize system functionality</li>
-                            <li>• Monitored and sustained computer systems for peak performance</li>
-                            <li>• Installed and configured both hardware and software components</li>
-                            <li>• Troubleshooted and resolved technical issues promptly</li>
-                        </ul>
+                <!-- Job 4 -->
+                <div class="border-b border-border lg:border-b-0 lg:border-r p-8 group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col reveal delay-300 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-display text-xl font-bold">IT Support - Internship</h4>
+                        <span class="font-mono text-xs border border-border px-2 py-1 rounded-full group-hover:border-black whitespace-nowrap ml-2 transition-colors">Mar - Aug 2019</span>
                     </div>
+                    <span class="font-mono text-xs text-gray-500 group-hover:text-black uppercase tracking-widest mb-6 block">University of Surabaya</span>
+                    <ul class="list-disc pl-4 space-y-2 text-sm text-gray-400 group-hover:text-gray-700">
+                        <li>Implemented a centralized system to monitor and control over 120 computers</li>
+                        <li>Enabled remote control, mass software installation, and updates</li>   
+                        <li>Installed and configured computer hardware, software, servers, networks</li>   
+                        <li>Assisted the network team in monitoring and maintaining 2 network servers</li> 
+                        <li>Provided IT support services, troubleshooting, and system operation</li>   
+                    </ul>
                 </div>
+
+                <!-- Job 5 -->
+                <div class="lg:border-b-0 p-8 group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col reveal delay-300 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-display text-xl font-bold">IT Support - OSCE Exam</h4>
+                        <span class="font-mono text-xs border border-border px-2 py-1 rounded-full group-hover:border-black whitespace-nowrap ml-2 transition-colors">2019</span>
+                    </div>
+                    <span class="font-mono text-xs text-gray-500 group-hover:text-black uppercase tracking-widest mb-6 block">University of Surabaya</span>
+                    <ul class="list-disc pl-4 space-y-2 text-sm text-gray-400 group-hover:text-gray-700">
+                        <li>Maintained computer networks to ensure seamless operations</li>
+                        <li>Provided essential technical support to optimize system functionality</li>
+                        <li>Monitored and sustained computer systems for peak performance</li>
+                        <li>Installed and configured both hardware and software components</li>
+                        <li>Troubleshooted and resolved technical issues promptly</li>
+                    </ul>
+                </div>
+
             </div>
         </section>
 
-        <!-- Projects & Certifications -->
-        <section id="projects" class="mb-20 fade-in">
-            <h2 class="text-2xl font-thin mb-12 text-center">Projects & Certifications</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card rounded-xl p-6 slide-in-left tilt-card">
-                    <h3 class="text-lg font-normal mb-6 text-accent-500 dark:text-accent-400">Projects</h3>
-                    <div class="space-y-6">
-                        <div class="border-l-2 border-accent-400 dark:border-accent-500 pl-4">
-                            <h4 class="font-medium mb-2">Blackbox Targets Manager</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">Easy way to manage blackbox exporter targets for prometheus monitoring</p>
-                            <a href="https://github.com/senhan07/Blackbox-Targets-Manager" target="_blank" rel="noopener noreferrer" class="text-accent-600 dark:text-accent-400 hover:text-accent-500 dark:hover:text-accent-300 transition-colors text-sm">Visit Repositories →</a>
-                        </div>
-                        <div class="border-l-2 border-accent-400 dark:border-accent-500 pl-4">
-                            <h4 class="font-medium mb-2">E-commerce Design</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">Designing e-commerce products for platforms such as Shopee using high-quality real product photography</p>
-                            <a href="https://shopee.com/cueing123" target="_blank" rel="noopener noreferrer" class="text-accent-600 dark:text-accent-400 hover:text-accent-500 dark:hover:text-accent-300 transition-colors text-sm">View Store →</a>
-                        </div>
-                    </div>
+        <!-- Featured Project -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 border-y border-border reveal">
+            <div class="p-8 md:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-border">
+                <span class="text-signal font-mono text-xl mb-4">03 /// Featured Tool</span>
+                <h3 class="font-display text-4xl font-bold mb-4">PBXR</h3>
+                <p class="text-gray-400 mb-8 leading-relaxed">
+                    Prometheus Blackbox Exporter Manager. A custom solution to streamline the management of Prometheus blackbox exporter targets. Reduces manual configuration time.
+                </p>
+                <a href="https://github.com/senhan07/PBXR" class="link-underline text-xl font-bold inline-block w-fit">
+                    View Repository &rarr;
+                </a>
+            </div>
+            <div class="bg-[#1a1a1a] p-8 md:p-12 flex items-center justify-center relative overflow-hidden group">
+                <div class="font-mono text-xs text-gray-700 leading-tight absolute inset-0 p-4 opacity-30 select-none group-hover:opacity-50 transition-opacity">
+                    func main() {<br>&nbsp;&nbsp;log.Fatal(http.ListenAndServe(":8080", nil))<br>}<br>// Critical Infra
                 </div>
-                <div class="glass-card rounded-xl p-6 slide-in-right tilt-card">
-                    <h3 class="text-lg font-normal mb-6 text-accent-500 dark:text-accent-400">Certifications</h3>
-                    <div class="space-y-6">
-                        <div class="border-l-2 border-accent-400 dark:border-accent-500 pl-4">
-                            <h4 class="font-medium mb-2">EF SET Certificate - C1 Advanced</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">English proficiency certification</p>
-                            <a href="https://cert.efset.org/R4sy4Y" target="_blank" rel="noopener noreferrer" class="text-accent-600 dark:text-accent-400 hover:text-accent-500 dark:hover:text-accent-300 transition-colors text-sm">View Certificate →</a>
-                        </div>
-                        <div class="border-l-2 border-accent-400 dark:border-accent-500 pl-4">
-                            <h4 class="font-medium mb-2">Computer and Network Engineering Internship</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">University of Surabaya - 2019</p>
-                        </div>
-                        <div class="border-l-2 border-accent-400 dark:border-accent-500 pl-4">
-                            <h4 class="font-medium mb-2">NGINX, Apache, SSL Encryption</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Udemy Certification - 2019</p>
-                            <a href="https://ude.my/UC-WXZADM0N" target="_blank" rel="noopener noreferrer" class="text-accent-600 dark:text-accent-400 hover:text-accent-500 dark:hover:text-accent-300 transition-colors text-sm">View Certificate →</a>
-                        </div>
-                    </div>
-                </div>
+                <!-- Added pulse animation -->
+                <div class="w-48 h-48 bg-signal rounded-full blur-[100px] absolute opacity-20 group-hover:opacity-40 transition-opacity animate-pulse-slow"></div>
+                <svg class="w-24 h-24 text-white relative z-10 group-hover:scale-110 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
             </div>
         </section>
 
-        <!-- Contact -->
-        <section id="contact" class="text-center fade-in">
-            <h2 class="text-2xl font-thin mb-8">Get in touch</h2>
-
-            <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                Have a project ? Let's contact with me
-            </p>
-            
-            <div class="flex justify-center space-x-8 text-sm mb-8">
-                <a href="mailto:losenhan1@gmail.com" class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors">
-                    E-Mail
+        <!-- Archive & Credentials -->
+        <section class="border-b border-border">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                <a href="https://shopee.com/cueing123" target="_blank" class="p-8 border-b md:border-b-0 border-r border-border group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col justify-between min-h-[200px] reveal delay-100 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4"><span class="text-xs font-mono text-gray-500 group-hover:text-black transition-colors">PROJECT /// DESIGN</span></div>
+                    <div>
+                        <h4 class="font-display font-bold text-xl leading-tight mb-2">E-commerce Design</h4>
+                        <p class="text-sm text-gray-500 group-hover:text-gray-600">Visual structuring for Shopee storefronts.</p>
+                    </div>
                 </a>
-                <a href="https://linkedin.com/in/vincent-hans" target="_blank" rel="noopener noreferrer" class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors">
-                    LinkedIn
+                <a href="https://cert.efset.org/R4sy4Y" target="_blank" class="p-8 border-b md:border-b-0 lg:border-r border-border group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col justify-between min-h-[200px] reveal delay-200 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4"><span class="text-xs font-mono text-gray-500 group-hover:text-black transition-colors">CERTIFICATION /// EN</span></div>
+                    <div>
+                        <h4 class="font-display font-bold text-xl leading-tight mb-2">EF SET C1 Advanced</h4>
+                        <p class="text-sm text-gray-500 group-hover:text-gray-600">English Proficiency</p>
+                    </div>
                 </a>
-                <a href="https://github.com/senhan07" target="_blank" rel="noopener noreferrer" class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors">
-                    GitHub
+                <a href="https://ude.my/UC-WXZADM0N" target="_blank" class="p-8 border-b md:border-b-0 border-r border-border group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col justify-between min-h-[200px] reveal delay-300 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4"><span class="text-xs font-mono text-gray-500 group-hover:text-black transition-colors">CERTIFICATION /// WEB</span></div>
+                    <div>
+                        <h4 class="font-display font-bold text-xl leading-tight mb-2">NGINX & Apache SSL</h4>
+                        <p class="text-sm text-gray-500 group-hover:text-gray-600">Udemy Verified</p>
+                    </div>
                 </a>
-                <a href="https://instagram.com/senhan07" target="_blank" rel="noopener noreferrer" class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors">
-                    Instagram
-                </a>
+                <div class="p-8 group hover:bg-white hover:text-black transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col justify-between min-h-[200px] cursor-default reveal delay-300 hover:delay-0 hover:duration-300 hover:ease-out">
+                    <div class="flex justify-between items-start mb-4"><span class="text-xs font-mono text-gray-500 group-hover:text-black transition-colors">INTERNSHIP /// EDU</span></div>
+                    <div>
+                        <h4 class="font-display font-bold text-xl leading-tight mb-2">Computer Network Engineering</h4>
+                        <p class="text-sm text-gray-500 group-hover:text-gray-600">University of Surabaya</p>
+                    </div>
+                </div>
             </div>
-            
         </section>
 
         <!-- Footer -->
-        <footer class="text-center mt-20 pt-8 border-t border-gray-200 dark:border-gray-700">
-            <p class="text-gray-500 dark:text-gray-400 text-sm">© <span id="current-year">2024</span> Vincent Hans Susanto</p>
+        <footer id="contact" class="bg-paper">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="p-8 md:p-16 lg:border-r border-border reveal">
+                    <h2 class="font-display text-5xl md:text-7xl font-bold uppercase mb-8 leading-none">Let's <br><span class="text-signal">Connect.</span></h2>
+                    <div class="flex flex-col gap-4 items-start">
+                        <a href="mailto:losenhan1@gmail.com" class="text-2xl md:text-3xl hover:text-signal transition-colors font-light">Get in Touch</a>
+                        <a href="https://linkedin.com/in/vincent-hans" class="text-2xl md:text-3xl hover:text-signal transition-colors font-light">linkedin.com/vincent-hans</a>
+                    </div>
+                </div>
+                <div class="p-8 md:p-16 flex flex-col justify-end items-start lg:items-end reveal delay-200">
+                     <div class="grid grid-cols-2 gap-x-12 gap-y-4 text-sm font-mono text-gray-500 mb-12">
+                        <span>INSTAGRAM</span> <a href="https://instagram.com/senhan07" class="text-white hover:text-signal">@senhan07</a>
+                        <span>GITHUB</span> <a href="https://github.com/senhan07" class="text-white hover:text-signal">@senhan07</a>
+                        <span>LOCATION</span> <span class="text-white">Surabaya, ID</span>
+                    </div>
+                    <p class="text-gray-600 text-xs uppercase tracking-widest">&copy; <span id="year">2025</span> VINCENT HANS SUSANTO</p>
+                    <p class="text-gray-600 text-xs uppercase tracking-widest">Built with <span class="text-signal">Tailwind</span> & <span class="text-signal">Coffee</span></p>
+                </div>
+            </div>
         </footer>
-    </div>
+
+    </main>
 
     <script>
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
+        document.getElementById('year').textContent = new Date().getFullYear();
         
-        // Check for saved theme preference or default to dark mode
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        html.classList.toggle('dark', savedTheme === 'dark');
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
         
-        themeToggle.addEventListener('click', () => {
-            const isDark = html.classList.contains('dark');
-            html.classList.toggle('dark', !isDark);
-            localStorage.setItem('theme', !isDark ? 'dark' : 'light');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            btn.textContent = menu.classList.contains('hidden') ? 'MENU' : 'CLOSE';
         });
 
-        // Animation on scroll
+        // Close menu when a link is clicked
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                btn.textContent = 'MENU';
+            });
+        });
+
+        // Intersection Observer for Reveal on Scroll
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
                 }
             });
         }, observerOptions);
 
-        // Observe all animated elements
-        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+        document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
         });
-
-        // Page indicator functionality
-        const pageDots = document.querySelectorAll('.page-dot');
-        const sections = document.querySelectorAll('section, header');
-
-        // Smooth scroll to section
-        pageDots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = dot.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Update active dot on scroll
-        const updateActiveDot = () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            pageDots.forEach(dot => {
-                dot.classList.remove('bg-accent-500', 'dark:bg-accent-400');
-                dot.classList.add('bg-gray-300', 'dark:bg-gray-600');
-                if (dot.getAttribute('data-section') === current) {
-                    dot.classList.remove('bg-gray-300', 'dark:bg-gray-600');
-                    dot.classList.add('bg-accent-500', 'dark:bg-accent-400');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', updateActiveDot);
-        updateActiveDot(); // Initial call
-
-        // Initial fade in for elements in viewport
-        setTimeout(() => {
-            document.querySelectorAll('.fade-in').forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    el.classList.add('visible');
-                }
-            });
-        }, 100);
-
-        // Ensure page starts at top - multiple methods for reliability
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-        
-        // Immediate scroll to top
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        
-        // On DOM ready
-        document.addEventListener('DOMContentLoaded', () => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        });
-        
-        // On window load
-        window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        });
-        
-        // Additional safety check
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        }, 50);
-
-        // Update copyright year
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-
-
-
-
-
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98dc39c0f5285fd8',t:'MTc2MDMzMTEyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
